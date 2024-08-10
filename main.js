@@ -45,24 +45,31 @@ function setupkeyboardListener() {
 function update() {
   // 우주선의 좌표값이 무한대로 업데이트가 되는게 아닌! 경기장 안에서만 있게 하려면?
   if ("ArrowRight" in keysDown) {
-    if (spaceshipX < 340) {
-      spaceshipX += 5; // 우주선의 속도
-    }
+    spaceshipX += 5; // 우주선의 속도
   } // right botten
-
   if ("ArrowLeft" in keysDown) {
-    if (spaceshipX > 0) {
-      spaceshipX -= 5;
-    }
+    spaceshipX -= 5;
   } // left botten
   if ("ArrowUp" in keysDown) {
-    if (spaceshipY > 500) spaceshipY -= 5;
+    spaceshipY -= 5;
   } // up botten
   if ("ArrowDown" in keysDown) {
-    if (spaceshipY < 640) {
-      spaceshipY += 5;
-    }
+    spaceshipY += 5;
   } // down botten
+
+  // 이동제한
+  if (spaceshipX <= 0) {
+    spaceshipX = 0;
+  }
+  if (spaceshipX >= canvas.width - 60) {
+    spaceshipX = canvas.width - 60;
+  }
+  if (spaceshipY >= canvas.height - 60) {
+    spaceshipY = canvas.height - 60;
+  }
+  if (spaceshipY <= canvas.height - 160) {
+    spaceshipY = canvas.height - 160;
+  }
 }
 
 function render() {
