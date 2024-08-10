@@ -34,12 +34,18 @@ let keysDown = {};
 function setupkeyboardListener() {
   document.addEventListener("keydown", function (event) {
     keysDown[event.key] = true;
-    console.log("키다운 객체에 들어간 값은?", keysDown);
+    console.log(keysDown);
   });
   document.addEventListener("keyup", function (event) {
     delete keysDown[event.key];
-    console.log("버튼 클릭후", keysDown);
+    if (event.key == "ArrowSpacebar") {
+      createBullet() // 총알 생성
+    }
   });
+}
+
+function createBullet () {
+
 }
 
 function update() {
@@ -86,3 +92,11 @@ function main() {
 loadImage();
 setupkeyboardListener();
 main();
+
+
+// 총알만들기
+// 1. 스페이스바를 누르면 총알 발사
+// 2. 총알이 발사 = 총알의 y값이 -- , 총알의 x값은? 스페이스바를 누른 순간의 우주선의 x좌표
+// 3. 발사된 총알들은 총알 배열에 저장을 한다.
+// 4. 총알들은 x, y 좌표값이 있어야 한다.
+// 5. 총알 배열을 가지고 render 그려준다.
