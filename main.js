@@ -13,40 +13,68 @@ let backgroundImage, spaceshipImage, bulletImage, enemyImage, gameOverImage;
 let spaceshipX = canvas.width / 2 - 30;
 let spaceshipY = canvas.height - 60;
 
-function loadImage(){
-    backgroundImage = new Image();
-    backgroundImage.src = "images/background.jpg";
- 
-    spaceshipImage = new Image();
-    spaceshipImage.src = "images/spaceship.png";
- 
-    bulletImage = new Image();
-    bulletImage.src = "images/bullet.png";
- 
-    enemyImage = new Image();
-    enemyImage.src = "images/enemy.png";
- 
-    gameOverImage = new Image();
-    gameOverImage.src = "images/gameover.jpg";
+function loadImage() {
+  backgroundImage = new Image();
+  backgroundImage.src = "images/background.jpg";
+
+  spaceshipImage = new Image();
+  spaceshipImage.src = "images/spaceship.png";
+
+  bulletImage = new Image();
+  bulletImage.src = "images/bullet.png";
+
+  enemyImage = new Image();
+  enemyImage.src = "images/enemy.png";
+
+  gameOverImage = new Image();
+  gameOverImage.src = "images/gameover.jpg";
 }
 
+let keysDown = {};
 function setupkeyboardListener() {
-    document.addEventListener("keydown",function(event){
-        console.log("무슨 키가 눌렸어?", event.key)
-    })
+  document.addEventListener("keydown", function (event) {
+    keysDown[event.key] = true;
+    console.log("키다운 객체에 들어간 값은?", keysDown);
+  });
+  document.addEventListener("keyup", function (event) {
+    delete keysDown[event.key];
+    console.log("버튼 클릭후", keysDown);
+  });
 }
 
-function render(){
-    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-    ctx.drawImage(spaceshipImage, spaceshipX, spaceshipY);
+function update() {
+  // 우주선의 좌표값이 무한대로 업데이트가 되는게 아닌! 경기장 안에서만 있게 하려면?
+  if ("ArrowRight" in keysDown) {
+    if (spaceshipX < 340) {
+      spaceshipX += 5; // 우주선의 속도
+    }
+  } // right botten
+
+  if ("ArrowLeft" in keysDown) {
+    if (spaceshipX > 0) {
+      spaceshipX -= 5;
+    }
+  } // left botten
+  if ("ArrowUp" in keysDown) {
+    if (spaceshipY > 500) spaceshipY -= 5;
+  } // up botten
+  if ("ArrowDown" in keysDown) {
+    if (spaceshipY < 640) {
+      spaceshipY += 5;
+    }
+  } // down botten
 }
 
-
-function main(){
-    render();
-    requestAnimationFrame(main);
+function render() {
+  ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+  ctx.drawImage(spaceshipImage, spaceshipX, spaceshipY);
 }
 
+function main() {
+  update();
+  render();
+  requestAnimationFrame(main);
+}
 
 loadImage();
 setupkeyboardListener();
