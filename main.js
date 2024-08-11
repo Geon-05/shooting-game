@@ -25,7 +25,7 @@ function Bullet() {
     bulletList.push(this);
   };
 
-  this.update = function(){
+  this.update = function () {
     this.y -= 7;
   };
 }
@@ -66,6 +66,33 @@ function createBullet() {
   b.init();
 }
 
+function generateRandomValue(min, max) {
+  let randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+  return randomNum;
+}
+
+let enemyList = [];
+function Enemy() {
+  this.x = 0;
+  this.y = 0;
+  this.init = function () {
+    this.y = 0;
+    this.x = generateRandomValue(0, canvas.width - 80);
+
+    enemyList.push(this);
+  };
+  this.update = function(){
+    this.y += 2;
+  }
+}
+
+function createEnemy (){
+  const interval = setInterval(function(){
+    let e = new Enemy ();
+    e.init();
+  },1000);
+}
+
 function update() {
   // 우주선의 좌표값이 무한대로 업데이트가 되는게 아닌! 경기장 안에서만 있게 하려면?
   if ("ArrowRight" in keysDown) {
@@ -96,8 +123,12 @@ function update() {
   }
 
   // 총알의 y좌표 업데이트하는 함수 호출
-  for (let i = 0; i < bulletList.length; i++){
-    bulletList[i].update();    
+  for (let i = 0; i < bulletList.length; i++) {
+    bulletList[i].update();
+  }
+
+  for (let i = 0; i < enemyList.length; i++) {
+    enemyList[i].update();
   }
 }
 
@@ -107,6 +138,10 @@ function render() {
 
   for (let i = 0; i < bulletList.length; i++) {
     ctx.drawImage(bulletImage, bulletList[i].x, bulletList[i].y);
+  }
+
+  for (let i = 0;i<enemyList.length;i++){
+    ctx.drawImage(enemyImage, enemyList[i].x, enemyList[i].y);
   }
 }
 
@@ -118,6 +153,7 @@ function main() {
 
 loadImage();
 setupkeyboardListener();
+createEnemy();
 main();
 
 // 총알만들기
@@ -127,4 +163,10 @@ main();
 // 4. 총알들은 x, y 좌표값이 있어야 한다.
 // 5. 총알 배열을 가지고 render 그려준다.
 
-// 깃테스트ㅇㅇ
+// 적군 만들기
+// 적군 / x, y, init, update
+// 적군은 위치가 랜덤하다
+// 적군은 밑으로 내려온다 / y좌표가 증가!
+// 1초마다 하나씩 적군이 나온다
+// 적군의 우주선이 바닥에 닿으면 게임 오버
+// 적군과 총알이 만나면 우주선이 사라진다 / 점수 1점 획득
